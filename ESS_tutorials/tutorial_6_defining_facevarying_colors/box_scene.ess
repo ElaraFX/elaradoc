@@ -1,0 +1,149 @@
+#####################################################
+# ESS Sample
+#
+# Copyright 2015 Rendease, Ltd. All Rights Reserved.
+#
+
+verbose "info"						# set verbosity level to info
+
+link "liber_shader"					# link to standard C++ shader DSO
+
+node "options" "opt"				# create a rendering options node
+	int "min_samples" 0
+	int "max_samples" 16
+	enum "filter" "gaussian"
+	scalar "filter_size" 3.0
+	scalar "display_gamma" 2.2		# by default, the display gamma is off
+end
+
+node "outvar" "var1"
+	token "name" "color"
+	enum "type" "color"
+	bool "use_gamma" on				# apply display gamma for this output
+end
+
+node "output" "out1"				# create an output in EXR foramt
+	token "filename" "D:/box_scene.0001.png"
+	enum "data_type" "rgb"
+	ref[] "var_list" 1
+		"var1"
+end
+
+node "camera" "cam1"				# create perspective camera
+	ref[] "output_list" 1
+		"out1"
+	scalar "focal" 100.0
+	scalar "aperture" 144.724029
+	scalar "aspect" 1.333333
+	int "res_x" 320
+	int "res_y" 240
+end
+
+node "instance" "caminst1"			# create camera instance
+	ref "element" "cam1"
+end
+
+node "pointlight" "light1"			# create a point light
+	scalar "intensity" 100000.0
+	color "color" 1.0 1.0 1.0
+end
+
+node "instance" "lightinst1"		# create light instance
+	ref "element" "light1"
+	matrix "transform"
+		1.0 0.0 0.0 0.0
+		0.0 1.0 0.0 0.0
+		0.0 0.0 1.0 0.0
+		141.375732 83.116005 35.619434 1.0
+	# motion transform must be set even when there's no motion blur
+	matrix "motion_transform"
+		1.0 0.0 0.0 0.0
+		0.0 1.0 0.0 0.0
+		0.0 0.0 1.0 0.0
+		141.375732 83.116005 35.619434 1.0
+end
+
+node "plastic" "plastic_shader"		# create plastic surface shader
+	color "diffuse_color" 0.7 0.2 0.3
+	scalar "specular_weight" 0.8
+	scalar "specular_roughness" 0.1
+end
+
+node "osl_shadergroup" "plastic_shader_group"
+	ref[] "nodes" 1
+		"plastic_shader"
+end
+
+node "material" "mtl"
+	ref "surface_shader" "plastic_shader_group"
+end
+
+node "poly" "obj1"					# create triangle mesh
+	point[] "pos_list" 1
+		-7.068787 -4.155799 -22.885710
+		-0.179573 -7.973234 -16.724060
+		-7.068787  4.344949 -17.619093
+		-0.179573  0.527515 -11.457443
+		 0.179573 -0.527514 -28.742058
+		 7.068787 -4.344948 -22.580408
+		 0.179573  7.973235 -23.475441
+		 7.068787  4.155800 -17.313791
+	index[] "face_counts" 1
+		4 4 4 4 4 4					# all faces are of 4 vertices
+	index[] "face_indices" 1
+		0 1 3 2
+		1 5 7 3
+		5 4 6 7
+		4 0 2 6
+		4 5 1 0
+		2 3 7 6
+	declare color[] "geom_color" facevarying	# declare array of data elements
+	color[] "geom_color" 1						# set the data values
+		0.0 1.0 1.0
+		1.0 0.0 1.0
+		1.0 1.0 0.0
+		1.0 0.0 0.0
+		0.0 1.0 0.0
+		0.0 0.0 1.0
+		1.0 1.0 1.0
+		0.5 1.0 0.5
+		1.0 0.5 0.5
+		0.5 0.5 1.0
+		1.0 0.0 0.5
+		0.5 1.0 0.0
+		0.0 1.0 0.5
+		0.5 0.0 1.0
+		1.0 0.5 0.0
+		0.0 0.5 1.0
+		0.3 0.8 1.0
+		1.0 0.5 0.7
+		0.2 1.0 0.6
+		1.0 0.2 0.9
+		0.4 0.7 1.0
+		1.0 0.3 0.3
+		0.8 0.6 0.2
+		0.1 0.9 1.0
+	declare index[] "geom_color_idx" facevarying	# declare array of indices
+	index[] "geom_color_idx" 1						# set the indices
+		 0  3  9  6		# the number of data elements must 
+		 7 10 15 12		# match the sum of all face counts
+		13 16 21 18
+		19 22  4  1
+		 5 23 17 11
+		20  2  8 14
+end
+
+node "instance" "inst1"				# create object instance
+	ref "element" "obj1"
+	ref[] "mtl_list" 1
+		"mtl"
+end
+
+node "instgroup" "world"			# create root world
+	ref[] "instance_list" 1
+		"caminst1"
+		"lightinst1"
+		"inst1"
+end
+
+render "world" "caminst1" "opt"		# render frame command

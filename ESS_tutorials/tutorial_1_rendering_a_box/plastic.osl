@@ -1,0 +1,21 @@
+/////////////////////////////////////////////////////
+// Plastic surface shader
+//
+// Copyright 2015 Rendease, Ltd. All Rights Reserved.
+//
+
+#ifndef BUILTIN
+#define BUILTIN [[ int builtin = 1 ]]
+#endif
+
+closure color phong(normal N, float exponent) BUILTIN;
+
+shader plastic(
+	color diffuse_color = color(1, 1, 1), 
+	float specular_weight = 0.1, 
+	float specular_roughness = 0.2
+	)
+{
+	Ci = (1 - specular_weight) * diffuse_color * diffuse(N) 
+		+ specular_weight * phong(N, specular_roughness * 100);
+}
