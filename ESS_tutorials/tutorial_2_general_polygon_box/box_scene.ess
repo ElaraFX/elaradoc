@@ -22,7 +22,7 @@ node "outvar" "var1"
 	bool "use_gamma" on				# apply display gamma for this output
 end
 
-node "output" "out1"				# create an output in EXR foramt
+node "output" "out1"				# create an output in PNG foramt
 	token "filename" "D:/box_scene.0001.png"
 	enum "data_type" "rgb"
 	ref[] "var_list" 1

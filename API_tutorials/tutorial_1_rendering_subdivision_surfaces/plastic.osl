@@ -1,0 +1,31 @@
+/////////////////////////////////////////////////////
+// Plastic surface shader
+//
+// Copyright 2013-2016 Rendease Co., Ltd. All Rights Reserved.
+//
+
+#ifndef BUILTIN
+#define BUILTIN [[ int builtin = 1 ]]
+#endif
+
+closure color phong(normal N, float exponent) BUILTIN;
+
+shader plastic(
+	color diffuse_color = color(1, 1, 1), 
+	float specular_weight = 0.1, 
+	float specular_roughness = 0.2
+	)
+{
+	// use the color from shader parameter by default, just 
+	// in case the getattribute below failed
+	//
+	color color_result = diffuse_color;
+	
+	// access primitive variable attached to current geometric 
+	// object by name and use that as color
+	//
+	getattribute("geom_color", color_result);
+	
+	Ci = (1 - specular_weight) * color_result * diffuse(N) 
+		+ specular_weight * phong(N, specular_roughness * 100);
+}
