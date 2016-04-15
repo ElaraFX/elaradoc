@@ -1,10 +1,8 @@
 /////////////////////////////////////////////////////
 // Module initialization and cleanup.
 //
-// Copyright 2015 Rendease, Ltd. All Rights Reserved.
+// Copyright 2013-2016 Rendease Co., Ltd. All Rights Reserved.
 //
-
-#define EI_NO_OSL_INTEROP 1
 
 #include <ei_shaderx.h>
 
