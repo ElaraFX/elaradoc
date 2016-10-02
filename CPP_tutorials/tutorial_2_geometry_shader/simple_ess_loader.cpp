@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////
-// Module initialization and cleanup.
+// Geometry shader for loading ESS as procedural
 //
 // Copyright 2013-2016 Rendease Co., Ltd. All Rights Reserved.
 //

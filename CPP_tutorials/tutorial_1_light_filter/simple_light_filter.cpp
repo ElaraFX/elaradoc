@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////
-// Module initialization and cleanup.
+// Light filter with distance falloffs
 //
 // Copyright 2013-2016 Rendease Co., Ltd. All Rights Reserved.
 //

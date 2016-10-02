@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////
-// Module initialization and cleanup.
+// Camera node with disc shaped lens
 //
 // Copyright 2013-2016 Rendease Co., Ltd. All Rights Reserved.
 //
@@ -80,9 +80,10 @@ lens (simple_dof_camera)
 
 	eiBool support(
 		eiNode *cam, 
-		eiInt feature)
+		eiInt feature, 
+		void *feature_params)
 	{
-		return ei_std_camera_support(cam, feature);
+		return ei_std_camera_support(cam, feature, feature_params);
 	}
 
 	eiBool object_to_screen(
