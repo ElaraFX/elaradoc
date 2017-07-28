@@ -8,7 +8,7 @@
 #define BUILTIN [[ int builtin = 1 ]]
 #endif
 
-closure color phong(normal N, float exponent) BUILTIN;
+closure color microfacet_beckmann(normal N, float alpha, float eta) BUILTIN;
 
 shader plastic(
 	color diffuse_color = color(1, 1, 1), 
@@ -27,5 +27,5 @@ shader plastic(
 	getattribute("geom_color", color_result);
 	
 	Ci = (1 - specular_weight) * color_result * diffuse(N) 
-		+ specular_weight * phong(N, specular_roughness * 100);
+		+ specular_weight * microfacet_beckmann(N, specular_roughness, 1.5);
 }
