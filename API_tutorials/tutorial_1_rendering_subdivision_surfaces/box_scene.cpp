@@ -8,6 +8,8 @@
 
 int main(int argc, char* argv[])
 {
+	ei_context();								// create rendering context
+
 	ei_verbose("info");							// set verbosity level to info
 
 	ei_link("liber_shader");					// link to standard C++ shader DSO
@@ -166,7 +168,9 @@ int main(int argc, char* argv[])
 		ei_end_tab();
 	ei_end_node();
 
-	ei_render("world", "caminst1", "opt");		// render frame command
+	ei_render_run("world", "caminst1", "opt");	// render frame command
+
+	ei_end_context();							// destroy rendering context
 
 	return 0;
 }
