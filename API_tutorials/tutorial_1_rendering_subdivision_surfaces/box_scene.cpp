@@ -168,7 +168,9 @@ int main(int argc, char* argv[])
 		ei_end_tab();
 	ei_end_node();
 
+	ei_render_prepare();
 	ei_render_run("world", "caminst1", "opt");	// render frame command
+	ei_render_cleanup();
 
 	ei_end_context();							// destroy rendering context
 
